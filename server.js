@@ -5,20 +5,12 @@ import { pool } from "./db.js";
 const app = express();
 const port = 3000;
 import * as housesRepository from "./repositories/houses.repository.js";
+import * as housesController from "./controllers/houses.controller.js";
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // parse JSON bodies
 //HOUSES
 //READ ALLE HUSENE
-app.get("/houses", async (req, res) => {
-  try {
-    const allHouses = await housesRepository.getAllHouses();
-    res.json(allHouses);
-    //res.status(200).json(result.rows);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Database error", code: error.code });
-  }
-});
+app.get("/houses", housesController.getAllHouses);
 //READ ETT HUS
 app.get("/houses/:id", async (req, res) => {
   try {
