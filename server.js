@@ -22,10 +22,14 @@ app.get("/houses", async (req, res) => {
 //READ ETT HUS
 app.get("/houses/:id", async (req, res) => {
   try {
-    const one = await pool.query("SELECT id, name, color, founder FROM houses WHERE id = $1", [req.params.id]);
-    if (one.rowCount === 0) return res.sendStatus(404);
+    const id = req.params.id;
+    const house = await housesRepository.getHousesById(id);
 
-    res.status(200).json(one.rows[0]);
+    if (house) {
+      res.status(200).json(house);
+    } else {
+      res.sendStatus(404);
+    }
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Database error" });
