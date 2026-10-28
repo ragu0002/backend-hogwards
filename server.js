@@ -4,78 +4,30 @@ import express from "express";
 import { pool } from "./db.js";
 const app = express();
 const port = 3000;
+
 import * as housesRepository from "./repositories/houses.repository.js";
+import * as teachersController from "./controllers/teachers.controller.js";
 import * as housesController from "./controllers/houses.controller.js";
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // parse JSON bodies
 //HOUSES
 //READ ALLE HUSENE
 app.get("/houses", housesController.getAllHouses);
 //READ ETT HUS
-app.get("/houses/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const house = await housesRepository.getHousesById(id);
-
-    if (house) {
-      res.status(200).json(house);
-    } else {
-      res.sendStatus(404);
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database error" });
-  }
-});
+app.get("/houses/:id", housesController.getHousesById);
 
 //TEACHERS
 //READ ALLE LÆRERNE
-app.get("/teachers", async (req, res) => {
-  try {
-    const result = await pool.query("Select * from teachers");
-    console.log(result.rows);
-    res.status(200).json(result.rows);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Database error", code: error.code });
-  }
-});
+app.get("/teachers", teachersController.getAllTeachers);
 
 //READ en LÆRER
-app.get("/teachers/:id", async (req, res) => {
-  try {
-    const one = await pool.query("SELECT id, name, house FROM teachers WHERE id = $1", [req.params.id]);
-    if (one.rowCount === 0) return res.sendStatus(404);
-
-    res.status(200).json(one.rows[0]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database error" });
-  }
-});
+app.get("/teachers/:id", teachersController.getTeachersById);
 
 //CREATE en LÆRER
-app.post("/teachers", async (req, res) => {
-  const { name, house } = req.body;
-  try {
-    const result = await pool.query("INSERT into teachers (name, house) values ($1, $2) returning id, name, house", [name, house]);
-    res.status(201).json(result.rows[0]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database error" });
-  }
-});
+app.post("/teachers", teachersController.createTeacher);
 //DELETE en LÆRER
-app.delete("/teachers/:id", async (req, res) => {
-  try {
-    const del = await pool.query("DELETE FROM teachers WHERE id = $1", [req.params.id]);
-    if (del.rowCount === 0) return res.sendStatus(404);
-    res.sendStatus(204);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database error" });
-  }
-});
+app.delete("/teachers/:id", teachersController.deleteTeacher);
 //UPDATE en LÆRER
 app.put("/teachers/:id", async (req, res) => {
   const { name, house } = req.body;
