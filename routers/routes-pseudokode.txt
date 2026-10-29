@@ -1,0 +1,9 @@
+Routes: 
+
+I mine routes har jeg lagd fire dokumenter som passer på rutene til
+de tilsvarende tabellene. 
+
+Jeg kobler rutene på controllerene jeg har laget til de forskjellige rutene. 
+put hører til update osv..
+
+I toppen importerer jeg controller dokumentet mitt. 

@@ -1,0 +1,13 @@
+Server: 
+
+I serveren min henter jeg express og anvender det i en app konstant.
+
+Jeg sier at porten skal være 3000 og neders i dokumentet sier jeg at 
+den skal lytte til denne porten som betyr at det er localhost:3000 og
+deretter kommer mine routes. 
+
+Jeg importerer mine routes fra min routers folder.
+
+Så forteller jeg at express skal bruke mine deklarerte routes og
+for å forkorte koden i mine routes sier jeg at det alltid skal begynne 
+med "houses" for houses osv... 

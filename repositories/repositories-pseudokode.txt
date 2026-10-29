@@ -1,0 +1,27 @@
+Repository: 
+
+Her inne har jeg fire forsskjellige filer til de forskjellige tabellene. 
+
+I repositoryet tar jeg informasjonen jeg får fra controlleren og bruker det 
+til å snakke med databsen ved å bruke SQL kode. 
+
+Jeg returnerer rekkene databsen sender tilbake til meg til kontrolleren. 
+Det blir ikke sendt noe feil eller rikitg bare akuratt det som databasen sender tilabake. 
+
+Fungsjonene tar imot informasjonen fra controlleren med props. 
+
+Der jeg har sendt med "req.body" dekonstruerer jeg det med ({ name, body })
+Der jeg får body pluss id gjør jeg det på denne måten: (id, { name, house }). 
+
+Når jeg henter alle rekkene sender jeg bare tilbake .rows
+
+Når jeg henter en enkelt av noe, oppdaterer eller poster sender jeg kun tilbake 
+rows[0] som betyr den første rekken som sql sender tilbake. Eller rekken med index 0, som betyr det samme. 
+
+Når jeg sletter noe, returnerer jeg del.rowCount > 0. Det betyr at jeg sjekker om databasen
+har slettet minst én rad. Hvis rowCount er større enn 0, returnerer funksjonen true,
+og hvis ikke, returnerer den false.
+
+Jeg ble ikke ferdig med mine courses men der lagde jeg også en 
+fungsjon som henter min junction table og mine student og courses for å finne ut 
+hvilke studenter som tilhørte id´ene i mitt junction table. 

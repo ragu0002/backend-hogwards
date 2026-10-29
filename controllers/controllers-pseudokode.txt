@@ -1,0 +1,20 @@
+Controllers: 
+
+Her hentes dataet som blir gitt gjennom serveren og deretter routeren. 
+Jeg henter det med en request og en response. 
+
+Det varierer hvor mye man skal sende med til repositoryet. 
+Når man skal hente alle lærerene trenger man for eksempel ikke sende noenting videre. 
+
+Når man skal hente en enkel lærer skal man sende med id: "req.params.id" som man sender som en prop. 
+
+Når man skal oprette en behøver man ikke id, men man skal ha det som blir send med i bodyen. 
+Derfor sendte jeg "req.body" som prop. 
+
+I delete skal man også kun sende id. 
+
+Når man skal oppdatere en eksisterende lærer skal man sende med både id og body. 
+
+Når man får data tilbake fra repositoryet bryker jeg try catch som feilhåndtering
+Hvis noe som er null returnerer skal det bli sendt en feil 404, mens hvis noe blir returnert skal man få en 200 response. 
+Hvis ingenting blir sendt eller returnert skal man få en 500 feil. 
