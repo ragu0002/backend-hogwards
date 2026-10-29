@@ -1,56 +1,93 @@
+# API Endpoints
+
 ---
 
-Liste over alle endpointsene:
+## Houses
 
-Houses:
-Get all houses:
-Metode: Get
-Route: "/houses"
-Get a singel house:
-Metode: Get
-Route: "/houses/:id"
+#### Get all houses
 
-Studnets:
-Get all students:
-Metode: Get
-Route: "/students"
-Get a singel student:
-Metode: Get
-Route: "/students/:id"
-Create a student:
-Metode: Post
-Route: "/students"
-Update a student:
-Metode: Put
-Route: "/students/:id"
-Delete a student:
-Metode: Delte
-Route: "/students/:id"
+- **Method:** `GET`
+- **Route:** `/houses`
 
-Teachers:
-Get all teachers:
-Metode: Get
-Route: "/teachers"
-Get a singelteacher:
-Metode: Get
-Route: "/teachers/:id"
-Create a teacher:
-Metode: Post
-Route: "/teachers"
-Update a teacher:
-Metode: Put
-Route: "/teachers/:id"
-Delete a teacher:
-Metode: Delte
-Route: "/teachers/teachers
+#### Get a single house
 
-Courses:
-Get all courses:
-Metode: Get
-Route: "/courses"
-Get a singelcourse:
-Metode: Get
-Route: "/courses/:id"
+- **Method:** `GET`
+- **Route:** `/houses/:id`
 
-Hvordan teste??
-Bare kjør det jeg allerede har sendt med i min bruno!
+---
+
+## Students
+
+#### Get all students
+
+- **Method:** `GET`
+- **Route:** `/students`
+
+#### Get a single student
+
+- **Method:** `GET`
+- **Route:** `/students/:id`
+
+#### Create a student
+
+- **Method:** `POST`
+- **Route:** `/students`
+
+#### Update a student
+
+- **Method:** `PUT`
+- **Route:** `/students/:id`
+
+#### Delete a student
+
+- **Method:** `DELETE`
+- **Route:** `/students/:id`
+
+---
+
+## Teachers
+
+#### Get all teachers
+
+- **Method:** `GET`
+- **Route:** `/teachers`
+
+#### Get a single teacher
+
+- **Method:** `GET`
+- **Route:** `/teachers/:id`
+
+#### Create a teacher
+
+- **Method:** `POST`
+- **Route:** `/teachers`
+
+#### Update a teacher
+
+- **Method:** `PUT`
+- **Route:** `/teachers/:id`
+
+#### Delete a teacher
+
+- **Method:** `DELETE`
+- **Route:** `/teachers/:id`
+
+---
+
+## Courses
+
+#### Get all courses
+
+- **Method:** `GET`
+- **Route:** `/courses`
+
+#### Get a single course
+
+- **Method:** `GET`
+- **Route:** `/courses/:id`
+
+---
+
+## How to test
+
+Run the requests provided in my Bruno collection.
