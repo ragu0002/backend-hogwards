@@ -88,6 +88,6 @@
 
 ---
 
-## How to test
+## Hvordan teste endpoints?
 
-Run the requests provided in my Bruno collection.
+Du kan teste de ved hjelp av bruno og hogwards-api-test mappen min!
