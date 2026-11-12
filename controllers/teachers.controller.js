@@ -1,4 +1,6 @@
 import * as teachersRepository from "../repositories/teachers.repository.js";
+import UpdateTeacherDto from "../dtos/updateteacher.dto.js";
+import HTTPError from "../errorhandling/HTTPError.js";
 export async function getAllTeachers(req, res) {
   try {
     const allTeachers = await teachersRepository.getAllTeachers();
@@ -24,8 +26,9 @@ export async function getTeachersById(req, res) {
   }
 }
 export async function createTeacher(req, res) {
+  const newTeacherData = req.body;
   try {
-    const newTeacher = await teachersRepository.createTeacher(req.body);
+    const newTeacher = await teachersRepository.createTeacher(newTeacherData);
 
     if (newTeacher) {
       res.status(200).json(newTeacher);
@@ -54,15 +57,13 @@ export async function deleteTeacher(req, res) {
 }
 export async function updateTeacher(req, res) {
   const id = req.params.id;
-  try {
-    const updatedTeacher = await teachersRepository.updateTeacher(id, req.body);
-    if (updatedTeacher) {
-      res.status(200).json(updatedTeacher);
-    } else {
-      res.sendStatus(404);
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database error" });
-  }
+  const teacherData = req.body;
+
+  const oldTeacher = await teachersRepository.getTeachersById(id);
+  if (!oldTeacher) throw new HTTPError(404, "This teacher does not exist");
+
+  const newTeacherData = UpdateTeacherDto.parse(teacherData);
+  const updatedTeacher = await teachersRepository.updateTeacher(id, newTeacherData);
+
+  res.status(200).json(updatedTeacher);
 }
