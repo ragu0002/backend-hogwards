@@ -1,35 +1,36 @@
-export default (err, req, res, next) => {
-  let statusCode = err.statusCode || 500;
-  let error = err.error || "Internal Server Error";
-  let message = err.message || "Something went wrong";
+import * as z from "zod";
 
-  if (err.statusCode == 400) {
-    error = "Bad Request";
-  } else if (err.statusCode == 401) {
-    error = "Unauthorized";
-  } else if (err.statusCode == 403) {
-    error = "Forbidden";
-  } else if (err.statusCode == 404) {
-    error = "Not Found";
-  } else if (err.statusCode == 409) {
-    error = "Conflict";
-  } else if (err.statusCode == 422) {
-    error = "Unprocessable Entity";
-  } else if (err.statusCode == 429) {
-    error = "Too Many Requests";
-  } else if (err.statusCode == 500) {
-    error = "Internal Server Error";
-  } else if (err.statusCode == 501) {
-    error = "Not Implemented";
-  } else if (err.statusCode == 502) {
-    error = "Bad Gateway";
-  } else if (err.statusCode == 503) {
-    error = "Service Unavailable";
+const ERROR_NAMES = {
+  400: "Bad Request",
+  401: "Unauthorized",
+  403: "Forbidden",
+  404: "Not Found",
+  409: "Conflict",
+  422: "Unprocessable Entity",
+  429: "Too Many Requests",
+  500: "Internal Server Error",
+  501: "Not Implemented",
+  502: "Bad Gateway",
+  503: "Service Unavailable",
+};
+
+export default (err, req, res, next) => {
+  // Zod-valideringsfeil -> 400
+  if (err instanceof z.ZodError) {
+    return res.status(400).json({
+      message: z.prettifyError(err),
+      error: ERROR_NAMES[400],
+      statusCode: 400,
+    });
   }
 
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Something went wrong";
+  const error = ERROR_NAMES[statusCode] || "Internal Server Error";
+
   res.status(statusCode).json({
-    message: message,
-    error: error,
-    statusCode: statusCode,
+    message,
+    error,
+    statusCode,
   });
 };

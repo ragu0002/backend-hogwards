@@ -41,7 +41,11 @@ export async function createTeacher(teacher) {
 }
 
 export async function deleteTeacher(id) {
-  const del = await pool.query("DELETE FROM teachers WHERE id = $1", [id]);
+  const del = await pool.query(
+    /*sql*/ `DELETE FROM teachers
+    WHERE id = $1`,
+    [id],
+  );
   return del.rowCount > 0;
 }
 
