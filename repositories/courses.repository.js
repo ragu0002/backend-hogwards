@@ -1,9 +1,9 @@
 import { pool } from "../db.js";
 
 async function addStudentsToCourses(courses) {
-  const studentsResult = await pool.query("SELECT * FROM students");
+  const studentsResult = await pool.query(/*sql*/ `SELECT * from students`);
 
-  const studentCoursesResult = await pool.query("SELECT * FROM courses_students");
+  const studentCoursesResult = await pool.query(/*sql*/ `SELECT * from courses_students`);
 
   const students = studentsResult.rows;
   const studentCourses = studentCoursesResult.rows;
@@ -16,6 +16,7 @@ async function addStudentsToCourses(courses) {
     return {
       ...course,
       students: courseStudents.map((student) => ({
+        id: student.id,
         name: student.name,
       })),
     };
@@ -25,14 +26,35 @@ async function addStudentsToCourses(courses) {
 }
 
 export async function getAllCourses() {
-  const result = await pool.query(`SELECT courses.id, courses.name, teachers.name AS teacher FROM courses JOIN teachers ON courses.fk_teachers = teachers.id`);
+  const result = await pool.query(/*sql*/ `SELECT
+  courses.id,
+  courses.name       AS course,
+  teachers.name      AS teacher,
+  course_type.name   AS type,
+  course_level.name  AS level,
+  schoolyear.year as year
+FROM courses
+JOIN teachers      ON teachers.id     = courses.fk_teachers
+JOIN course_level  ON course_level.id = courses.level
+JOIN course_type   ON course_type.id  = courses.type
+JOIN schoolyear on schoolyear.id = courses.year;`);
 
   return addStudentsToCourses(result.rows);
 }
 
 export async function getCoursesById(id) {
-  const result = await pool.query(`SELECT courses.id, courses.name, teachers.name AS teacher FROM courses JOIN teachers ON courses.fk_teachers = teachers.id WHERE courses.id = $1`, [id]);
-
+  const result = await pool.query(/*sql*/ `SELECT
+  courses.id,
+  courses.name       AS course,
+  teachers.name      AS teacher,
+  course_type.name   AS type,
+  course_level.name  AS level,
+  schoolyear.year as year
+FROM courses
+JOIN teachers      ON teachers.id     = courses.fk_teachers
+JOIN course_level  ON course_level.id = courses.level
+JOIN course_type   ON course_type.id  = courses.type
+JOIN schoolyear on schoolyear.id = courses.year;`);
   if (result.rowCount === 0) {
     return null;
   }
