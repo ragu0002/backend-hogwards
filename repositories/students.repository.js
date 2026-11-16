@@ -2,20 +2,24 @@ import { pool } from "../db.js";
 
 export async function getAllStudents() {
   const result = await pool.query(/*sql*/ `SELECT students.id, 
-                                            students.name, houses.name as house 
+                                            students.name, houses.name as house, students.birthday, schoolyear.year as schoolyear
                                             from students 
-                                            join houses 
-                                            on students.house_id = houses.id`);
+                                            left join houses 
+                                            on students.house_id = houses.id
+                                            left join schoolyear
+                                            on students.school_year = schoolyear.id`);
   return result.rows;
 }
 
 export async function getStudentsById(id) {
   const one = await pool.query(
     /*sql*/ `SELECT students.id, 
-                                            students.name, houses.name as house 
+                                            students.name, houses.name as house, students.birthday, schoolyear.year as schoolyear
                                             from students 
-                                            join houses 
-                                            on students.house_id = houses.id 
+                                            left join houses 
+                                            on students.house_id = houses.id
+                                            left join schoolyear
+                                            on students.school_year = schoolyear.id
                                             WHERE students.id = $1`,
     [id],
   );
@@ -28,9 +32,9 @@ export async function getStudentsById(id) {
 
 export async function createStudent(student) {
   const result = await pool.query(
-    /*sql*/ `INSERT into students (name, year, house_id)
-                                            values ($1, $2, $3) returning id`,
-    [student.name, student.year, student.house_id],
+    /*sql*/ `INSERT into students (name, house_id, birthday, school_year)
+                                            values ($1, $2, $3, $4) returning id`,
+    [student.name, student.house_id, student.birthday, student.school_year],
   );
   if (result.rowCount === 0) {
     return null;
@@ -50,7 +54,12 @@ export async function deleteStudent(id) {
 }
 
 export async function updateStudent(id, student) {
-  const upd = await pool.query(/*sql*/ `UPDATE students SET name = $1, year = $2, house_id = $3 WHERE id = $4 RETURNING *`, [student.name, student.year, student.house_id, id]);
+  const upd = await pool.query(
+    /*sql*/ `UPDATE students 
+                                        SET name = $1, house_id = $2, birthday = $3, school_year = $4
+                                        WHERE id = $5 RETURNING *`,
+    [student.name, student.house_id, student.birthday, student.school_year, id],
+  );
   if (upd.rowCount === 0) {
     return null;
   } else {
