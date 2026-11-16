@@ -1,4 +1,5 @@
 import * as housesRepository from "../repositories/houses.repository.js";
+import HTTPError from "../errorhandling/HTTPError.js";
 export async function getAllHouses(req, res) {
   const allHouses = await housesRepository.getAllHouses();
   res.json(allHouses);
