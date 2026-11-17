@@ -9,6 +9,7 @@ import studentsRouter from "./routers/students.router.js";
 import coursesRouter from "./routers/courses.router.js";
 import examsRouter from "./routers/exams.router.js";
 import errorhandler from "./errorhandling/errorhandler.js";
+import gradesRouter from "./routers/grades.router.js";
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // parse JSON bodies
@@ -28,6 +29,9 @@ app.use("/courses/", coursesRouter);
 
 //EXAMS
 app.use("/exams/", examsRouter);
+
+//GRADES
+app.use("/grades/", gradesRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
