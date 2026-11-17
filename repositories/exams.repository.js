@@ -1,11 +1,38 @@
 import { pool } from "../db.js";
+
+async function addGradesToExam(exams) {
+  const gradesData = await pool.query(/*sql*/ `SELECT * FROM grades`);
+  const allGrades = gradesData.rows;
+
+  return exams.map(({ grade_id, ...exam }) => {
+    const grade = allGrades.find((grade) => grade.id === grade_id);
+
+    return {
+      ...exam,
+      grade: grade
+        ? {
+            id: grade.id,
+            letter: grade.letter,
+            name: grade.name,
+            description: grade.description,
+            pass: grade.pass,
+          }
+        : null,
+    };
+  });
+}
+
 export async function getAllExams() {
-  const result = await pool.query(/*sql*/ `SELECT c.name  AS course, s.name  AS student, g.letter AS grade
+  const result = await pool.query(/*sql*/ `SELECT e.id,
+                                            c.name AS course,
+                                            s.name AS student,
+                                            e.grade AS grade_id
                                             FROM exams e
-                                            LEFT JOIN courses  c ON e.course  = c.id
-                                            LEFT JOIN students s ON e.student = s.id
-                                            LEFT JOIN grades   g ON e.grade   = g.id;`);
-  return result.rows;
+                                            JOIN courses  c ON e.course  = c.id
+                                            JOIN students s ON e.student = s.id
+                                            ORDER BY e.id;
+  `);
+  return addGradesToExam(result.rows);
 }
 export async function getExamsById(id) {
   const one = await pool.query(
